@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.ag.restboot.bean.firstdbcheck.SearchParam;
+import com.ag.restboot.bean.SearchParam;
 import com.ag.restboot.dao.SearchServiceDao;
 
 @Component

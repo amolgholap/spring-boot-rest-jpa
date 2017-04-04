@@ -5,11 +5,15 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ag.restboot.services.firstdbcheck.SearchService;
+import com.ag.restboot.services.SearchService;
+
 
 /**
  * An example of creating a Rest api using Spring Annotations @RestController.
@@ -34,5 +38,13 @@ public class Controller {
 	@Autowired
 	private SearchService searchService;
 	String result = "";
+	
+
+	@GetMapping("/test")
+	@ResponseBody
+	@Transactional(readOnly = true)
+	public String helloWorld() {
+		return this.searchService.getUser((long) 1, "first").getName();
+	}
 
 }

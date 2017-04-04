@@ -11,7 +11,12 @@ spring:
     username: postgres
     password: Common@123
     driver-class-name: org.postgresql.Driver
+  h2:
+    console:
+      enabled: false
 security:
   basic:
     enabled: false
+
+logging.level.org.hibernate.SQL: debug
   
