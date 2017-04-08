@@ -47,7 +47,15 @@ public class SearchServiceImpl implements SearchService{
 	public User getUser(Long id, String name) {
 		Assert.notNull(id, "Name must not be null");
 		Assert.notNull(name, "Country must not be null");
-		return this.userRepository.findByIdAndNameAllIgnoringCase(id, name);
+		
+		return this.userRepository.findByNameAllIgnoringCase(name);
+	}
+
+	@Override
+	public String addUser(String name) {
+		User usr = new User(name);
+		usr=this.userRepository.save(usr);
+		return "User Created In Databse ID:  Name: "+usr.getName();
 	}
 
 }

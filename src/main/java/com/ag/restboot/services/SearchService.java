@@ -7,4 +7,5 @@ public interface SearchService {
 
 	String getUserDetails(SearchParam searchParam);
 	User getUser(Long id, String name);
+	String addUser(String name);
 }

@@ -41,11 +41,17 @@ public class Controller {
 	String result = "";
 	
 
-	@GetMapping("/test/{user}")
+	@GetMapping("/user/{activity}/{user}")
 	@ResponseBody
-	@Transactional(readOnly = true)
-	public String helloWorld(@PathVariable String user) {
-		return this.searchService.getUser((long) 1, user).getName();
+	@Transactional
+	public String helloWorld(@PathVariable String activity,@PathVariable String user) {
+		if("add".equalsIgnoreCase(activity)){
+			return this.searchService.addUser(user);
+		}else if("getUser".equalsIgnoreCase(activity)){
+			return this.searchService.getUser((long) 1, user).getName();
+		}else{
+			return "something wrong";
+		}
 	}
 
 }
