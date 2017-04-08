@@ -55,7 +55,7 @@ public class SearchServiceImpl implements SearchService{
 	public String addUser(String name) {
 		User usr = new User(name);
 		usr=this.userRepository.save(usr);
-		return "User Created In Databse ID:  Name: "+usr.getName();
+		return "User Created In Databse ID: "+usr.getId()+" Name: "+usr.getName();
 	}
 
 }
