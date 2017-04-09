@@ -45,11 +45,14 @@ public class Controller {
 	@ResponseBody
 	@Transactional
 	public String helloWorld(@PathVariable String activity,@PathVariable String user) {
-		if("add".equalsIgnoreCase(activity)){
+		if("addUser".equalsIgnoreCase(activity)){
 			return this.searchService.addUser(user);
 		}else if("getUser".equalsIgnoreCase(activity)){
 			return this.searchService.getUser((long) 1, user).getName();
-		}else{
+		}else if("addBooks".equalsIgnoreCase(activity)){
+			return this.searchService.addBooks();
+		}
+		else{
 			return "something wrong";
 		}
 	}
