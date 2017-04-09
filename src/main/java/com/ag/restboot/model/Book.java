@@ -2,14 +2,17 @@ package com.ag.restboot.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Book{
     private int id;
     private String name;
+    @JsonIgnore
     private BookCategory bookCategory;
 
     public Book() {
-
+    	super();
     }
 
     public Book(String name) {

@@ -73,26 +73,41 @@ public class SearchServiceImpl implements SearchService{
 		List<BookCategory> lsBkCat= new ArrayList<BookCategory>();
         // save a couple of categories
         final BookCategory categoryA = new BookCategory("Category A");
-        Set bookAs = new HashSet<Book>(){{
+        /*Set bookAs = new HashSet<Book>(){{
             add(new Book("Book A1", categoryA));
             add(new Book("Book A2", categoryA));
             add(new Book("Book A3", categoryA));
         }};
-        categoryA.setBooks(bookAs);
+        categoryA.setBooks(bookAs);*/
 
         final BookCategory categoryB = new BookCategory("Category B");
-        Set bookBs = new HashSet<Book>(){{
-            add(new Book("Book B1", categoryB));
-            add(new Book("Book B2", categoryB));
-            add(new Book("Book B3", categoryB));
-        }};
+        Book bb1=  new Book("Book B1");
+        bb1.setBookCategory(categoryB);
+        Book bb2=  new Book("Book B1");
+        bb2.setBookCategory(categoryB);
+        Book bb3=  new Book("Book B1");
+        bb3.setBookCategory(categoryB);
+        Set bookBs = new HashSet<Book>();
+        bookBs.add(bb1);
+        bookBs.add(bb2);
+        bookBs.add(bb3);
         categoryB.setBooks(bookBs);
 
-        bookCategoryRepository.save(new HashSet<BookCategory>() {{
+        /*bookCategoryRepository.save(new HashSet<BookCategory>() {{
             add(categoryA);
             add(categoryB);
-        }});
-
+        }});*/
+        //update books
+        categoryA.setName("Category A Updated");
+        categoryA.setId(1);
+        Set bookAs = new HashSet<Book>();
+        Book bk = new Book("Book A3 Updated");
+        bk.setBookCategory(categoryA);
+        bk.setId(1);
+        bookAs.add(bk);
+        categoryA.setBooks(bookAs);
+        
+        bookCategoryRepository.save(categoryA);
         // fetch all categories
         String sOutPut="";
         String separator="";
@@ -104,5 +119,12 @@ public class SearchServiceImpl implements SearchService{
         lsBkCat.add(categoryB);
         return sOutPut;
     }
+
+	@Override
+	public List<BookCategory> getBooks(String name) {
+		//bookCategoryRepository.findAll();
+		List<BookCategory> lsBkCat=bookCategoryRepository.findAll();
+		return lsBkCat;
+	}
 
 }

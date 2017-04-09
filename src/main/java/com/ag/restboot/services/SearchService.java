@@ -12,5 +12,6 @@ public interface SearchService {
 	User getUser(Long id, String name);
 	String addUser(String name);
 	String addBooks();
+	List<BookCategory> getBooks(String name);
 	
 }
