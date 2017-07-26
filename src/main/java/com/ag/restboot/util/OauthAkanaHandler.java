@@ -75,5 +75,59 @@ public class OauthAkanaHandler {
         return output;
 	}
 	
+	public String  executePostWithPathData(User user,HttpMethod method,String jsonObject){
+		ClientCredentialsResourceDetails resourceDetails = new ClientCredentialsResourceDetails();
+		LOG.info("Akana token  url "+akanaTokenUri );
+		LOG.info("Akana token  clientId "+clientId );
+		LOG.info("Akana token  scope "+scope );
+		resourceDetails.setAccessTokenUri(akanaTokenUri);
+		resourceDetails.setClientId(clientId);
+		resourceDetails.setClientSecret(clientSecret);
+		resourceDetails.setScope(Arrays.asList(scope));
+		resourceDetails.setId(clientId);
+		resourceDetails.setClientAuthenticationScheme(AuthenticationScheme.header);
+		
+		ClientCredentialsAccessTokenProvider provider = new ClientCredentialsAccessTokenProvider();
+		
+		OAuth2AccessToken accessToken = provider.obtainAccessToken(resourceDetails, new DefaultAccessTokenRequest());
+		
+		OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails, new DefaultOAuth2ClientContext(accessToken));
+		
+		String proxyServer="3.234.164.81";
+		int proxyPort=80;
+		Proxy proxy= new Proxy(Type.HTTP, new InetSocketAddress(proxyServer, proxyPort));
+		//requestFactory.setProxy(proxy);
+		SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+		requestFactory.setReadTimeout(0);
+	    requestFactory.setConnectTimeout(0);
+	    requestFactory.setProxy(proxy);
+	    restTemplate.setRequestFactory(requestFactory);
+		LOG.debug("Akana api  url "+akanaServiceUrl);
+		String tokenVlaue="";
+		tokenVlaue=restTemplate.getAccessToken().getValue();
+		HttpHeaders headers = new HttpHeaders();
+		//String json="{\"directoryBranch\":\"ALL\",\"permitAbbreviatedRecords\":\"false\",\"abbreviatedFieldList\":{\"field\":[\"georaclehrid\",\"givenName\",\"sn\"]},\"primaryKey\":{\"sn\":\"Vannini\"},\"fieldList\":{\"field\":[\"uid\",\"mail\",\"gessostatus\",\"gessocompanyname\",\"employeeType\",\"departmentNumber\",\"description\",\"gessodepartment\",\"gessojobfunction\",\"businessCategory\",\"gehrbusinesssegment\",\"gessostatus\",\"cn\",\"sn\",\"givenName\",\"gessolinkedbu\",\"c\",\"postalCode\",\"title\",\"gessoworkdirectphone\",\"mobile\",\"l\",\"st\"]}}";
+		String json="{\"directoryBranch\":\"ALL\",\"permitAbbreviatedRecords\":\"false\",\"abbreviatedFieldList\":{\"field\":[\"georaclehrid\",\"givenName\",\"sn\"]},##primaryKey##,\"fieldList\":{\"field\":[\"uid\",\"mail\",\"gessostatus\",\"gessocompanyname\",\"employeeType\",\"departmentNumber\",\"description\",\"gessodepartment\",\"gessojobfunction\",\"businessCategory\",\"gehrbusinesssegment\",\"gessostatus\",\"cn\",\"sn\",\"givenName\",\"gessolinkedbu\",\"c\",\"postalCode\",\"title\",\"gessoworkdirectphone\",\"mobile\",\"l\",\"st\"]}}";
+		json=json.replace("##primaryKey##", EPNUtility.createQueryUsingUser(user));
+		String finalURL="";
+		try {
+			finalURL=akanaServiceUrl +URLEncoder.encode(json, StandardCharsets.UTF_8.toString())+"&responsetype=json";
+		} catch (UnsupportedEncodingException e) {
+		}
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Authorization", "bearer "+tokenVlaue);
+		
+		URI urlNet=null;
+		try {
+			urlNet = new URI(finalURL);
+		} catch (URISyntaxException e) {
+		}
+		org.springframework.http.HttpEntity<String> entity = new org.springframework.http.HttpEntity<String>(null ,headers);
+		final ResponseEntity<String> greeting=restTemplate.exchange(urlNet, method, entity, String.class);
+		
+		String output=greeting.getBody();
+		return "["+output+"]";
+	}
+	
 
 }
