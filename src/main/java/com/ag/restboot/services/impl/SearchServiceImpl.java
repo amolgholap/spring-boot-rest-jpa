@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.ag.restboot.bean.Employee;
 import com.ag.restboot.bean.SearchParam;
 import com.ag.restboot.bean.User;
 import com.ag.restboot.dao.repository.UserRepository;
@@ -125,6 +126,25 @@ public class SearchServiceImpl implements SearchService{
 		//bookCategoryRepository.findAll();
 		List<BookCategory> lsBkCat=bookCategoryRepository.findAll();
 		return lsBkCat;
+	}
+	
+	@Override
+	public List<Employee> getEmployees() {
+		try {
+			return searchDAO.getEmployees();
+		} catch (Exception e) {
+		}
+		return null;
+	}
+
+	@Override
+	public String addEmployees(Employee employee) {
+		try {
+			return searchDAO.addEmployees(employee);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

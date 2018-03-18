@@ -15,9 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Component;
 
+import com.ag.restboot.bean.Employee;
 import com.ag.restboot.bean.SearchParam;
 import com.ag.restboot.dao.SearchServiceDao;
 
@@ -90,5 +93,36 @@ public class SearchServiceDaoImpl implements SearchServiceDao{
 		}
 		logger.info("EXIT:SearchServiceDaoImpl:getUserDetails");
 		return result;
+	}
+
+
+	@Override
+	public List<Employee> getEmployees() {
+		try{
+		return jdbcTemplate.query("select * from employee",new ResultSetExtractor<List<Employee>>(){  
+		    @Override  
+		     public List<Employee> extractData(ResultSet rs) throws SQLException,  
+		            DataAccessException {  
+		      
+		        List<Employee> list=new ArrayList<Employee>();  
+		        while(rs.next()){  
+		        Employee e=new Employee();  
+		        e.setId(rs.getInt("id"));  
+		        e.setName(rs.getString("name"));  
+		        e.setSalary(rs.getInt("salary"));  
+		        list.add(e);  
+		        }  
+		        return list;  
+		        }  
+		    });
+		}catch(Exception e){}
+		return null;
+	}
+
+
+	@Override
+	public String addEmployees(Employee employee) {
+		jdbcTemplate.update("INSERT INTO public.employee(name, salary) VALUES (?,?)", employee.getName(),employee.getSalary());
+		return "successfull added";
 	}
 }

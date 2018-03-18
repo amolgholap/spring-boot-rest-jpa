@@ -1,10 +1,7 @@
 package com.ag.restboot.rest;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ag.restboot.model.Book;
+import com.ag.restboot.bean.Employee;
 import com.ag.restboot.model.BookCategory;
 import com.ag.restboot.services.SearchService;
 
@@ -97,5 +94,38 @@ public class Controller {
 		lsBkCt.add(categoryA);
 		lsBkCt.add(categoryB);
 		return lsBkCt;*/
+	}
+	@GetMapping("/getEmployees")
+	@ResponseBody
+	public List<Employee> getEmployees() {
+		/*logger.info("ENTER:ProductConfiguratorDataServiceImpl: getEmployees");
+		List<Employee> alEmpl=null;
+			alEmpl = new ArrayList<Employee>();
+			
+			Employee em2 = new Employee();
+			em2.setName("Andrew");
+			em2.setId(1);
+			em2.setSalary(100);
+			Employee em1 = new Employee();
+			em1.setName("Feder");
+			em1.setId(2);
+			em1.setSalary(100);
+			Employee em = new Employee();
+			em.setName("John");
+			em.setId(3);
+			em.setSalary(100);
+			
+			alEmpl.add(em2);
+			alEmpl.add(em1);
+			alEmpl.add(em);
+
+			return alEmpl;*/
+		return searchService.getEmployees();
+	}
+	@PostMapping(path = "/addEmployees",consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public String addEmployees(@RequestBody Employee employee) {
+		logger.info("ENTER:ProductConfiguratorDataServiceImpl: addEmployees");
+		return searchService.addEmployees(employee);
 	}
 }
